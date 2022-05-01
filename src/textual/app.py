@@ -32,6 +32,7 @@ from .widget import Widget, Reactive
 
 PLATFORM = platform.system()
 WINDOWS = PLATFORM == "Windows"
+WSL = os.environ.get("WSLENV") is not None
 
 # asyncio will warn against resources not being cleared
 warnings.simplefilter("always", ResourceWarning)
@@ -346,7 +347,7 @@ class App(MessagePump):
 
     def refresh(self, repaint: bool = True, layout: bool = False) -> None:
         sync_available = (
-            os.environ.get("TERM_PROGRAM", "") != "Apple_Terminal" and not WINDOWS
+            os.environ.get("TERM_PROGRAM", "") != "Apple_Terminal" and not WINDOWS and not WSL
         )
         if not self._closed:
             console = self.console
